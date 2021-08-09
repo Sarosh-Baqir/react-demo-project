@@ -1,0 +1,9 @@
+.filters{
+    display: block;
+    width: 70%;
+    margin-left: 50px;
+    padding: 1em;
+    border: 1px solid lightgray;
+    clear:both;
+    background-color: 	#FF7F50;
+  }
