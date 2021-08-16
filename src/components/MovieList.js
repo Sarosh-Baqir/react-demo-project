@@ -15,8 +15,8 @@ class MovieList extends Component {
               <h2>{movie.title}</h2>
             </div>  
             <div>
-             <Link to={`/movies/${movie.id}`}><img src={movie.image} /></Link>
-              <p>&#9734;{movie.rating}</p><br />
+             <Link to={`/movies/${movie.id}`}><img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} /></Link>
+              <p>Popularity: {movie.popularity}</p><br />
               <Link to={`/movies-reviews/${movie.id}`}><h4>Reviews</h4></Link>
             </div>
           </li>

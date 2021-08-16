@@ -1,78 +1,74 @@
-import { useParams } from 'react-router-dom';
+import { Component } from 'react';
+import axios from 'axios';
 
 import './movieReviews.css';
 
-const MoviesReviews = () => {
+class MoviesReviews extends Component { 
 
-        var dummyData = [
-          {
-            "id": '1',
-            "title": "Titanic",
-            "image": "http://images.moviepostershop.com/titanic-movie-poster-1997-1020339699.jpg",
-            "imdbID": 'tt0076759',
-            "rating": 6.8,
-            "language": "English",
-            "reviews": [{"name":"Hollywood Reporter","review":"Paramount should replace that white mountain in its logo with an iceberg for the next several months. The studio will navigate spectacularly with its latest launch, Titanic, the most expensive movie ever created about what was once the largest moving object ever built."}]
-            
-          },
-          {
-            "id": '2',
-            "title": "Taken",
-            "image": "https://m.media-amazon.com/images/M/MV5BMTYxNzQ2MTUwMF5BMl5BanBnXkFtZTgwNTMwMDIzNDM@._V1_.jpg",
-            "imdbID": "&#39;tt0080684&#39",
-            "rating": 4.9,
-            "language": "English",
-            "reviews": [{"name":"English Reporter","review":"Paramount should replace that white mountain in its logo with an iceberg for the next several months. The studio will navigate spectacularly with its latest launch, Titanic, the most expensive movie ever created about what was once the largest moving object ever built."}]
-            
-          },
-          {
-            "id": '3',
-            "title": "Hot Sweet Sour",
-            "image": "https://m.media-amazon.com/images/M/MV5BNGY0OTBjZTgtZjAxMC00ODY3LTg5NTctMGY1MjBlOTI1MDNmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
-            "imdbID": "tt0086190&#39",
-            "rating": 5.7,
-            "language": "Turkish",
-            "reviews": [{"name":"Turk Reporter","review":"Paramount should replace that white mountain in its logo with an iceberg for the next several months. The studio will navigate spectacularly with its latest launch, Titanic, the most expensive movie ever created about what was once the largest moving object ever built."}]
-            
-          },
-          {
-            "id": '4',
-            "title": "The Time That Remains",
-            "image": "https://m.media-amazon.com/images/M/MV5BMTUwNDg4MDQzOF5BMl5BanBnXkFtZTcwNDU5MTkyNA@@._V1_.jpg",
-            "imdbID": "tt0086190&#39",
-            "rating": 5.7,
-            "language": "Arabic",
-            "reviews": [{"name":"Arab Reporter","review":"Paramount should replace that white mountain in its logo with an iceberg for the next several months. The studio will navigate spectacularly with its latest launch, Titanic, the most expensive movie ever created about what was once the largest moving object ever built."}]
-            
-          },
-          {
-            "id": '5',
-            "title": "The Villainess",
-            "image": "https://i.ytimg.com/vi/m82iyRmr1XE/movieposter.jpg",
-            "imdbID": "tt0086190&#39",
-            "rating": 5.7,
-            "language": "Korean",
-            "reviews": [{"name":"Korean Reporter","review":"Paramount should replace that white mountain in its logo with an iceberg for the next several months. The studio will navigate spectacularly with its latest launch, Titanic, the most expensive movie ever created about what was once the largest moving object ever built."}]
-            
+  _isMounted = false;
+    constructor(props) {
+        super(props);
+     
+        this.state = {
+          movies: [],
+        };
+      }
+      
+      componentDidMount(){
+        this._isMounted = true;
+        const moviesId = this.props.match.params.movieId;
+        console.log("moviesId " + moviesId);
+        axios.get(`
+        https://api.themoviedb.org/3/movie/${moviesId}/reviews?api_key=ed4f70d18fa8cbc03fb59ce04847e1bc`)
+        .then(res =>{
+            console.log(res);
+        const movies =res.data.results;
+        if (this._isMounted) {
+            this.setState({ movies });
+        }
+        }).catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        }
+        componentWillUnmount() {
+            this._isMounted = false;
           }
-        ];
 
-        let params = useParams();
-        const movie = dummyData.find(mov => mov.id === params.movieId)
 
+  render(){
+    console.log(this.state.movies);
     return(
-        <div className="mov">
-            <h3>{movie.title}</h3>
-            <div className='container'>
-            <img src={movie.image} alt={movie.title} className='mov_img'/><br /><br /><br />
-            </div>
-            <div className='container'>
-                <div className='mov_body'>
-                    <p><b>{movie.reviews[0].name} :</b> {movie.reviews[0].review}</p>
-            </div>
-            </div>
-        </div>
+      this.state.movies.map((movie) => {
+        return(
+          <div className='container'>
+            <h4>{movie.author}:</h4><p>{movie.content}</p>
+          </div>
+        )
+      })
     );
-}
+  
+    }
+  }
+
 
 export default MoviesReviews;
+/*
+return(
+    
+  {this.state.movies.map((movie) => {
+    return(
+    <div className="mov">
+      <h3>{this.state.movies.title}</h3>
+      <div className='container'>
+      <img src={`https://image.tmdb.org/t/p/w500${this.state.movies.poster_path}`} alt={movie.title} className='mov_img'/><br /><br /><br />
+      </div>
+      <div className='container'>
+          <div className='mov_body'>
+              <p><b>{movie.reviews[0].name} :</b> {movie.reviews[0].review}</p>
+      </div>
+      </div>
+  </div>
+    );
+  })}
+);*/

@@ -9,13 +9,14 @@ import Header from './header';
 const Movies = (props) => {
 
 
+
     const [ filteredlanguage, setfilteredlanguage] = useState('Select Language..');
 
     const filterChangeHandler = (selectedLanguage) => {
       setfilteredlanguage(selectedLanguage);
     };
     let filteredMovies = props.movies.filter((mov) => {
-      return mov.language === filteredlanguage;
+      return mov.original_language === filteredlanguage;
     });  
     if(filteredlanguage === 'Select Language..'){
        filteredMovies = props.movies;
