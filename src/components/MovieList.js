@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
-
-import FavouriteMovies from './favouriteMovies';
-import FvrtMoviesContext from '../store/favouretes';
+import { useDispatch } from 'react-redux'
 import './MovieList.css';
 
 const MovieList = (props) => {
-  const ctx = useContext(FvrtMoviesContext);
+  const dispatch = useDispatch();
+
+  // const fvrtmovHandler = (movie) => {
+  //   dispatch({ type: 'addFvrtMov', fmov: movie });
+  // };
  
     return(
       props.data.map((movie) => {
@@ -17,10 +18,10 @@ const MovieList = (props) => {
               <h2>{movie.title}</h2>
             </div>  
             <div>
-             <Link to={`/movies/${movie.id}`}><img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} /></Link>
+             <Link to={`/movies/${movie.id}`}><img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt="img"/></Link>
               <p>Popularity: {movie.popularity}</p><br />
               <Link to={`/movies-reviews/${movie.id}`}><h4>Reviews</h4></Link>
-              <button onClick={() => ctx.setFavourtieMovies(movie) }>Add to Favourites</button>
+              <button onClick={ () => dispatch({ type: 'addFvrtMov', fmov: movie }) }>Add to Favourites</button>
             </div>
           </li>
           </ul>

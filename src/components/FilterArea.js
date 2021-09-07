@@ -1,13 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+
 import Search from './search';
 import { Link } from 'react-router-dom';
 
 const FilterArea = (props) => {
 
    const dropdownChangeHandler = (event) => {
-    props.onChangeFilter(event.target.value);
-    //console.log(event.target.value);
+    props.onSelectingLang(event.target.value);
   };
     return(
       <div >

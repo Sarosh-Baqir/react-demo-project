@@ -1,13 +1,12 @@
-import { useContext } from "react";
+import { useSelector } from "react-redux";
+import ShowFvrtMov from "./showFvrtMov";
 
-import FvrtMoviesContext from '../store/favouretes';
-import MovieList from './MovieList';
-
-const FavouriteMovies = (props) => {
-   const ctx = useContext(FvrtMoviesContext);
+const FavouriteMovies = () => {
+   const fvrtMov = useSelector(state => state.favourtMovies);
+   console.log(fvrtMov);
     return (
        <div>
-          <MovieList data={ctx.movies}/>
+          <ShowFvrtMov data={fvrtMov}/>
       </div>
      );
   }
