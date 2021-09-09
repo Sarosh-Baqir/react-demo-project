@@ -1,0 +1,12 @@
+
+  
+  .container {
+    float: left;
+    width: 90%;
+    padding: 10px;
+    border: 1px solid grey;
+    margin: 2%;
+    
+    box-sizing: border-box;
+  }
+  
