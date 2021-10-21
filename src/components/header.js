@@ -1,16 +1,17 @@
-import { Component } from 'react';
+import { useSelector } from "react-redux";
 
-import './header.css';
+import "./header.css";
 
-class Header extends Component{
-    render() {
-        return(
-            <div>
-                <span className='header'>Total Movies  <span id="moviescount">{this.props.data.length}</span></span>
-            </div>
-        );
-    }
-}
+const Header = () => {
+  const allMov = useSelector((state) => state.allMovies);
 
+  return (
+    <div>
+      <span className="header">
+        Total Movies <span id="moviescount">{allMov.length}</span>
+      </span>
+    </div>
+  );
+};
 
 export default Header;

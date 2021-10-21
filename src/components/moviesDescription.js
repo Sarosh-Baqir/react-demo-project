@@ -1,59 +1,60 @@
-import axios from 'axios';
-import { Component } from 'react';
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import './movieDescription.css';
+import "./movieDescription.css";
 
+const MoviesDscription = () => {
+  const [movies, setMovies] = useState([]);
+  const params = useParams();
 
-class MoviesDscription extends Component {
-    _isMounted = false;
-    constructor(props) {
-        super(props);
-     
-        this.state = {
-          movies: [],
-        };
-      }
-  
-      componentDidMount(){
-        this._isMounted = true;
-        const moviesId = this.props.match.params.movieId;
-        axios.get(`
-        https://api.themoviedb.org/3/movie/${moviesId}?api_key=ed4f70d18fa8cbc03fb59ce04847e1bc`)
-        .then(res =>{
-            console.log(res.data);
-        const movies =res.data;
-        if (this._isMounted) {
-            this.setState({ movies });
-        }
-        }).catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        }
-        componentWillUnmount() {
-            this._isMounted = false;
-          }
+  const api = process.env.REACT_APP_WEATHER_API_KEY;
 
+  useEffect(() => {
+    const moviesId = params.movieId;
+    console.log(moviesId);
+    axios
+      .get(
+        `
+        https://api.themoviedb.org/3/movie/${moviesId}?api_key=${api}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        const movie = res.data;
+        setMovies(movie);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      });
+  }, []);
 
-    render(){
-        
-    return(
-        <div className="mov">
-            <h3>{this.state.movies.title}</h3>
-            <div className='container'>
-            <img src={`https://image.tmdb.org/t/p/w500${this.state.movies.poster_path}`} alt={this.state.movies.title} className='mov_img'/><br /><br /><br />
-            </div>
-            <div className='container'>
-                <div className='mov_body'>
-            <p><b> Popularity:</b> {this.state.movies.popularity}</p>
-            <p> <b>Language:</b> {this.state.movies.original_language}</p>
-            <p><b> Description:</b> {this.state.movies.overview}</p>
-            </div>
-            </div>
+  return (
+    <div className="mov">
+      <h3>{movies.title}</h3>
+      <div className="main">
+        <div className="container img">
+          <img
+            src={`https://image.tmdb.org/t/p/w500${movies.poster_path}`}
+            alt={movies.title}
+            className="mov_img"
+          />
         </div>
-    );
-    }
-
-}
+        <div className="container bod">
+          <p>
+            <b> Popularity:</b> {movies.popularity}
+          </p>
+          <p>
+            {" "}
+            <b>Language:</b> {movies.original_language}
+          </p>
+          <p>
+            <b> Description:</b> {movies.overview}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default MoviesDscription;
